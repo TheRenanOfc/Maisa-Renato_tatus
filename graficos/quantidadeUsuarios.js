@@ -6,49 +6,46 @@ async function quantidadeUsuarios() {
     const dados = await rest.json()
 
     const nomeDasRedes = Object.keys(dados)
-    const quantidadeUsuarios= Object.values(dados)
+    const quantidadeUsuarios = Object.values(dados)
 
     const data = [
         {
-            x: nomeDasRedes,
-            y: quantidadeUsuarios,
-            type: 'bar',
+            labels: nomeDasRedes,
+            values: quantidadeUsuarios,
+            type: 'pie',
             marker: {
-                color: getCSS('--primary-color')
-            }
+                colors: [
+                    getCSS('--primary-color'),
+                    getCSS('--secundary-color'),
+                    getCSS('--tertiary-color'),
+                    getCSS('--quaternary-color'),
+                    getCSS('--quinary-color')
+                ]
+            },
+            textinfo: 'label+percent', // Mostra o rótulo e a porcentagem
+            insidetextorientation: 'radial' // Orientação do texto
         }
     ]
 
     const layout = {
-        plot_bgcolor: getCSS('--bg-color'),
-        paper_bgcolor: getCSS('--bg-color'),
         title: {
-            text: "Etapas de ensino e seus estudantes",
-            x: 0,
+            text: "Distribuição de Estudantes por Etapa de Ensino",
             font: {
                 color: getCSS('--primary-color'),
                 family: getCSS('--font'),
                 size: 30,
             }
         },
-        xaxis: {
-            tickfont: tickConfig,
-            title: {
-                text: "Etapas de ensino",
-                font: {
-                    color: getCSS('--secundary-color')
-                }
-            }
+        showlegend: true, // Mostra a legenda
+        legend: {
+            orientation: 'h', // Orientação horizontal da legenda
+            x: 0.5,
+            y: -0.2,
+            xanchor: 'center',
+            yanchor: 'top'
         },
-        yaxis: {
-            tickfont: tickConfig,
-            title: {
-                text: "Estudantes ativos",
-                font: {
-                    color: getCSS('--secundary-color')
-                }
-            }
-        }
+        plot_bgcolor: getCSS('--bg-color'),
+        paper_bgcolor: getCSS('--bg-color'),
     }
     
     const grafico = document.createElement('div')
@@ -56,5 +53,5 @@ async function quantidadeUsuarios() {
     document.getElementById('graficos-container').appendChild(grafico)
     Plotly.newPlot(grafico, data, layout)
 }
- 
+
 quantidadeUsuarios()
